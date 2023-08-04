@@ -1,0 +1,115 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TIPO_USUARIO {
+  FAZENDEIRO
+  ADMIN
+  VETERINARIO
+}
+
+enum TIPO_REMEDIO {
+  SUPLEMENTO
+  REMEDIO
+  VERMIFUGO
+  VACINA
+}
+
+model USUARIO {
+  ID             BigInt        @id @default(autoincrement())
+  NOME           String
+  EMAIL          String        @unique
+  SENHA          String
+  TELEFONE       String        @unique
+  ENDERECO       String?
+  PERFIL_USUARIO TIPO_USUARIO  @default(FAZENDEIRO)
+  PROPRIEDADE    PROPRIEDADE[]
+  ANIMAL         ANIMAL[]
+  VACINA         VACINA[]
+  VETERINARIO    VETERINARIO[]
+}
+
+model VETERINARIO {
+  USUARIO    USUARIO @relation(fields: [USUARIO_ID], references: [ID])
+  USUARIO_ID BigInt  @unique
+  CRMV       String
+}
+
+model PROPRIEDADE {
+  ID         BigInt  @id @default(autoincrement())
+  NOME       String
+  LAT        String?
+  LNG        String?
+  ENDERECO   String
+  USUARIO    USUARIO @relation(fields: [USUARIO_ID], references: [ID])
+  USUARIO_ID BigInt
+}
+
+model VACINA {
+  ID            BigInt       @id @default(autoincrement())
+  NOME          String
+  FABRICANTE    String?
+  COMPOSICAO    String?
+  POSOLOGIA     String?
+  LOTE          String?
+  FRASCO_ML     String?
+  NFE_NUMERO    String?
+  NFE_CHAVE     String?
+  TIPO_REMERDIO TIPO_REMEDIO @default(REMEDIO)
+
+  USUARIO    USUARIO @relation(fields: [USUARIO_ID], references: [ID])
+  USUARIO_ID BigInt
+
+  VACINACAO VACINACAO[]
+}
+
+model ANIMAL {
+  ID              BigInt      @id @default(autoincrement())
+  NOME            String
+  SEXO            String
+  DATA_NASCIMENTO DateTime    @db.Date
+  CATEGORIA       String?
+  PESO            String?
+  STATUS          String
+  USUARIO         USUARIO     @relation(fields: [USUARIO_ID], references: [ID])
+  USUARIO_ID      BigInt
+  VACINACAO       VACINACAO[]
+}
+
+model VACINACAO {
+  ID            BigInt   @id @default(autoincrement())
+  CREATED_AT    DateTime @default(now())
+  DOSE_APLICADA String?
+  VIA_APLICADA  String?
+
+  VACINA                VACINA                  @relation(fields: [VACINA_ID], references: [ID])
+  VACINA_ID             BigInt
+  ANIMAL                ANIMAL                  @relation(fields: [ANIMAL_ID], references: [ID])
+  ANIMAL_ID             BigInt
+  NOTA_FISCAL_VACINACAO NOTA_FISCAL_VACINACAO[]
+}
+
+model NOTA_FISCAL {
+  ID                    BigInt                  @id @default(autoincrement())
+  NUMERO                String
+  CREATED_AT            DateTime                @default(now())
+  VALOR_TOTAL           String
+  STATUS_VALIDACAO      Boolean
+  MENSAGEM_VALIDACAO    String
+  NOTA_FISCAL_VACINACAO NOTA_FISCAL_VACINACAO[]
+}
+
+model NOTA_FISCAL_VACINACAO {
+  VACINACAO      VACINACAO   @relation(fields: [VACINACAO_ID], references: [ID])
+  VACINACAO_ID   BigInt      @unique
+  NOTA_FISCAL    NOTA_FISCAL @relation(fields: [NOTA_FISCAL_ID], references: [ID])
+  NOTA_FISCAL_ID BigInt
+}
