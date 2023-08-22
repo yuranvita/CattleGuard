@@ -3,6 +3,7 @@ import "express-async-errors"
 import express from "express";
 import { appRouter } from "./routes/appRoutes";
 import { ensureAppError } from "./middleware/ensureAppError";
+import 'dotenv/config'
 
 const app = express();
 

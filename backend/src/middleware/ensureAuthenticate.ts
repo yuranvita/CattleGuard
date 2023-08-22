@@ -2,9 +2,9 @@ import { Request, Response, NextFunction, request } from "express";
 import { verify } from "jsonwebtoken";
 
 interface IPayLoad {
-    USUARIO: string,
-    EMAIL:string,
-    iat : number
+  USUARIO: string,
+  EMAIL: string,
+  iat: number
 }
 
 export function ensureAuthenticated(
@@ -22,8 +22,8 @@ export function ensureAuthenticated(
 
   try {
 
-    const sub  = verify(token, process.env.SECRET_KEY! ) as any;
-    const payload : IPayLoad = sub 
+    const sub = verify(token, process.env.SECRET_KEY!) as any;
+    const payload: IPayLoad = sub
 
     req.USUARIO_ID = payload.USUARIO
 
