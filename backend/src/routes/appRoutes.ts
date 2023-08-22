@@ -15,7 +15,7 @@ const property = new PropertyController()
 appRouter.post("/login" , auth.handleLogin.bind(auth))
 appRouter.post("/user" , user.handleCreate.bind(user))
 appRouter.post("/property" , ensureAuthenticated ,property.create.bind(property))
-
+appRouter.put("/property/:id" , ensureAuthenticated ,property.update.bind(property))
 
 
 //get

@@ -10,6 +10,10 @@ interface IPropertyCreate {
   USUARIO_ID: BigInt
 }
 
+interface  IProperty extends IPropertyCreate{
+  ID:number
+}
+
 export class PropertyService{
   async create({ NOME, LAT, LNG, ENDERECO, USUARIO_ID} : IPropertyCreate){
 
@@ -29,10 +33,28 @@ export class PropertyService{
         NOME,
         LAT,
         LNG,
+        ENDERECO,
         USUARIO_ID : Number(USUARIO_ID),
       }
     })
 
     return bigIntSerializer(property)
+    }
+
+    async update({ NOME, LAT, LNG, ENDERECO, ID} : IProperty){
+
+      await prisma.pROPRIEDADE.update({
+        data : {
+          NOME,
+          LAT,
+          LNG,
+          ENDERECO
+        } ,
+        where : {
+          ID 
+        }
+      })
+
+      return 
     }
 }

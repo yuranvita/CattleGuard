@@ -4,11 +4,13 @@ import { PropertyService } from "../services/property.service";
 
 
 export class PropertyController{
+
   private propertyService
 
   constructor(){
     this.propertyService = new PropertyService()
   }
+
   async create(req: Request , res: Response ){
     const data = req.body
 
@@ -18,4 +20,14 @@ export class PropertyController{
 
     res.status(201).json(JSON.parse(property))
   }
+  
+  async update(req: Request , res: Response){
+    const data = req.body
+
+    const propertyUpdated = await this.propertyService.update(data)
+
+    res.status(200).json(propertyUpdated)
+  }
+
+
 }
