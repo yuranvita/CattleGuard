@@ -44,13 +44,14 @@ model VETERINARIO {
 }
 
 model PROPRIEDADE {
-  ID         BigInt  @id @default(autoincrement())
+  ID         BigInt   @id @default(autoincrement())
   NOME       String
   LAT        String?
   LNG        String?
   ENDERECO   String
-  USUARIO    USUARIO @relation(fields: [USUARIO_ID], references: [ID])
+  USUARIO    USUARIO  @relation(fields: [USUARIO_ID], references: [ID])
   USUARIO_ID BigInt
+  ANIMAL     ANIMAL[]
 }
 
 model VACINA {
@@ -81,6 +82,8 @@ model ANIMAL {
   STATUS          String
   USUARIO         USUARIO     @relation(fields: [USUARIO_ID], references: [ID])
   USUARIO_ID      BigInt
+  PROPRIEDADE     PROPRIEDADE @relation(fields: [PROPRIEDADE_ID], references: [ID])
+  PROPRIEDADE_ID  BigInt
   VACINACAO       VACINACAO[]
 }
 
