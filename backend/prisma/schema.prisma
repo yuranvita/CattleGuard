@@ -55,16 +55,16 @@ model PROPRIEDADE {
 }
 
 model VACINA {
-  ID            BigInt       @id @default(autoincrement())
-  NOME          String
-  FABRICANTE    String?
-  COMPOSICAO    String?
-  POSOLOGIA     String?
-  LOTE          String?
-  FRASCO_ML     String?
-  NFE_NUMERO    String?
-  NFE_CHAVE     String?
-  TIPO_REMERDIO TIPO_REMEDIO @default(REMEDIO)
+  ID           BigInt       @id @default(autoincrement())
+  NOME         String
+  FABRICANTE   String?
+  COMPOSICAO   String?
+  POSOLOGIA    String?
+  LOTE         String?
+  FRASCO_ML    String?
+  NFE_NUMERO   String?
+  NFE_CHAVE    String?
+  TIPO_REMEDIO TIPO_REMEDIO @default(REMEDIO)
 
   USUARIO    USUARIO @relation(fields: [USUARIO_ID], references: [ID])
   USUARIO_ID BigInt
