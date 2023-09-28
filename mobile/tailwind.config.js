@@ -5,7 +5,6 @@ module.exports = {
     './src/components/**/*.{js,jsx,ts,tsx}',
 ],
   theme: {
-  
     extend: {
       gradientColorStops:{
         "linear":{
@@ -13,9 +12,7 @@ module.exports = {
           'end' : '#11493F'
         }
       },
-      backgroundImage: {
-       
-        
+      backgroundImage: {       
         "linear-transparent":
           "linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
       },

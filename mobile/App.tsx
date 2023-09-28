@@ -1,20 +1,28 @@
 // import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./src/screens/login";
-import Welcome from "./src/screens/welcome";
+
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
+import { View, Text } from "react-native";
+import { AppRoutes } from "./src/routes/AppRoutes";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_900Black,
+  });
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="welcome"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="welcome" component={Welcome} />
-      </Stack.Navigator>
-    </NavigationContainer>
+  return fontsLoaded ? (
+    <AppRoutes />
+  ) : (
+    <View className="flex justify-center items-center">
+      <Text>...carregando</Text>
+    </View>
   );
 }
