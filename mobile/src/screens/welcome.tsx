@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
 import { Button, ButtonLinear } from "../components/button";
-import { useNavigation } from "@react-navigation/native";
+import { useSail } from "../utils/reactFunctions";
 
 export default function Welcome() {
-  const navigation = useNavigation() as any;
+  const { navigate } = useSail();
   return (
     <View className="h-screen w-screen justify-start mt-16 items-center">
       <Image source={require("../../assets/imgs/welcome.png")} />
@@ -14,12 +14,13 @@ export default function Welcome() {
           classView="border-green-700 border-2 py-3"
           classText="text-green-700 font-bold text-lg"
           name="Entrar"
-          actions={() => navigation.navigate("login")}
+          actions={() => navigate("login")}
         />
         <ButtonLinear
           classView="py-3 rounded-md"
           classText="text-lg font-bold p-[2px]"
           name="Criar Conta"
+          actions={() => navigate("register")}
         />
       </View>
     </View>

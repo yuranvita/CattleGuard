@@ -16,6 +16,9 @@ module.exports = {
         "linear-transparent":
           "linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
       },
+      colors:{
+        greenLight : '#259d87'
+      }
     },
   },
   plugins: [],

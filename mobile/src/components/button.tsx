@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { cn } from "../libs/cn";
 import { LinearGradient } from "expo-linear-gradient";
@@ -39,3 +39,32 @@ export function Button({ classView, classText, name, actions }: props) {
     </TouchableOpacity>
   );
 }
+
+interface RadioButton {
+  label: string;
+  value: boolean;
+  selectedValue: boolean;
+  onValueChange: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const RadioButton = ({
+  label,
+  value,
+  selectedValue,
+  onValueChange,
+}: RadioButton) => {
+  return (
+    <TouchableOpacity
+      onPress={() => onValueChange(value)}
+      className="flex-row items-center mb-3"
+    >
+      <View
+        className={`
+          "w-5 h-5 border rounded-full mr-3",
+          ${selectedValue === value ? "bg-blue-500" : ""},
+          `}
+      />
+      <Text className="text-lg">{label}</Text>
+    </TouchableOpacity>
+  );
+};

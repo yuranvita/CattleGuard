@@ -9,6 +9,9 @@ import {
 } from "@expo-google-fonts/inter";
 import { View, Text } from "react-native";
 import { AppRoutes } from "./src/routes/AppRoutes";
+import React from "react";
+
+import Toast from "react-native-toast-message";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +22,10 @@ export default function App() {
   });
 
   return fontsLoaded ? (
-    <AppRoutes />
+    <>
+      <AppRoutes />
+      <Toast />
+    </>
   ) : (
     <View className="flex justify-center items-center">
       <Text>...carregando</Text>
