@@ -1,31 +1,28 @@
-import { AppError } from "../error/AppError"
-import { prisma } from "../prisma"
-import { hash } from 'bcrypt'
-import { bigIntSerializer } from "../utils/bigIntSerializer"
-
+import { AppError } from "../error/AppError";
+import { prisma } from "../prisma";
+import { hash } from "bcrypt";
+import { bigIntSerializer } from "../utils/bigIntSerializer";
 
 interface IUserCreate {
-  NOME: string,
-  EMAIL: string,
-  SENHA: string,
-  TELEFONE: string,
-  ENDERECO: string,
-  PERFIL_USUARIO?: string
-  CRMV: string
+  NOME: string;
+  EMAIL: string;
+  SENHA: string;
+  TELEFONE: string;
+  ENDERECO: string;
+  PERFIL_USUARIO?: string;
+  CRMV: string;
 }
 
-
 export class UserService {
-
   async create(user: IUserCreate) {
     const checkUser = await prisma.uSUARIO.findFirst({
       where: {
-        EMAIL: user.EMAIL
-      }
-    })
+        OR: [{ TELEFONE: user.TELEFONE }, { EMAIL: user.EMAIL }],
+      },
+    });
 
     if (checkUser) {
-      throw new AppError('EMAIL já está sendo usado')
+      throw new AppError("Email ou Telefone já está sendo usado");
     }
     const userCreated = await prisma.uSUARIO.create({
       data: {
@@ -34,37 +31,37 @@ export class UserService {
         SENHA: await hash(user.SENHA, 10),
         TELEFONE: user.TELEFONE,
         ENDERECO: user.ENDERECO,
-      }
-    })
+      },
+    });
 
     if (user.PERFIL_USUARIO) {
-
       const checkCRMV = await prisma.vETERINARIO.findFirst({
         where: {
-          CRMV: user.CRMV
-        }
-      })
+          CRMV: user.CRMV,
+        },
+      });
 
       if (checkCRMV) {
-        throw new AppError("este CRMV já está cadastrado")
+        throw new AppError("este CRMV já está cadastrado");
       }
 
       await prisma.uSUARIO.update({
         data: {
-          PERFIL_USUARIO: "VETERINARIO"
-        }, where: {
-          ID: userCreated.ID
-        }
-      })
+          PERFIL_USUARIO: "VETERINARIO",
+        },
+        where: {
+          ID: userCreated.ID,
+        },
+      });
       await prisma.vETERINARIO.create({
         data: {
           USUARIO_ID: userCreated.ID,
           CRMV: user.CRMV,
-        }
-      })
+        },
+      });
     }
 
-    return bigIntSerializer(userCreated)
+    return bigIntSerializer(userCreated);
   }
 
   async list() {
@@ -75,8 +72,8 @@ export class UserService {
         ENDERECO: true,
         TELEFONE: true,
         PERFIL_USUARIO: true,
-      }
-    })
-    return bigIntSerializer(users)
+      },
+    });
+    return bigIntSerializer(users);
   }
 }

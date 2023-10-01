@@ -23,7 +23,7 @@ export class AuthService {
 
     const token = jwt.sign(
       {
-        USUARIO: checkUser.ID.toString(),
+        USUARIO_ID: checkUser.ID.toString(),
         EMAIL: checkUser.EMAIL,
       },
       process.env.SECRET_KEY!

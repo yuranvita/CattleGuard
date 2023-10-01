@@ -2,9 +2,9 @@ import { Request, Response, NextFunction, request } from "express";
 import { verify } from "jsonwebtoken";
 
 interface IPayLoad {
-  USUARIO: string,
-  EMAIL: string,
-  iat: number
+  USUARIO_ID: string;
+  EMAIL: string;
+  iat: number;
 }
 
 export function ensureAuthenticated(
@@ -21,11 +21,10 @@ export function ensureAuthenticated(
   const [, token] = authToken.split(" ");
 
   try {
-
     const sub = verify(token, process.env.SECRET_KEY!) as any;
-    const payload: IPayLoad = sub
+    const payload: IPayLoad = sub;
 
-    req.USUARIO_ID = payload.USUARIO
+    req.USUARIO_ID = payload.USUARIO_ID;
 
     return next();
   } catch (err) {
