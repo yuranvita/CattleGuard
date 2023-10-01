@@ -12,12 +12,11 @@ module.exports = {
           'end' : '#11493F'
         }
       },
-      backgroundImage: {       
-        "linear-transparent":
-          "linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
-      },
+     
       colors:{
-        greenLight : '#259d87'
+        greenLight : '#259d87',
+        greenGradientStart : '#23937e',
+        greenGradientEnd : '#10453b',
       }
     },
   },

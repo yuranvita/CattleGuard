@@ -20,6 +20,7 @@ import { useForm, Controller } from "react-hook-form";
 import { api } from "../../infra/service/api";
 
 import Toast from "react-native-toast-message";
+import { useSail } from "../../utils/reactFunctions";
 
 export default function Register() {
   const {
@@ -27,27 +28,36 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const { navigate } = useSail();
   const onSubmit = async (data: any) => {
-    await api
-      .post("/user", {
-        NOME: data.NOME + " " + data.SOBRE_NOME,
-        EMAIL: data.EMAIL,
-        TELEFONE: "55" + data.TELEFONE,
-        ENDERECO: data.ENDERECO,
-      })
-      .then((res) => {
-        Toast.show({
-          type: "success",
-          text1: res.data.message,
+    if (data.POLITICA_PRIVACIDADE && data.TERMO_E_CONDICAO) {
+      await api
+        .post("/user", {
+          NOME: data.NOME + " " + data.SOBRE_NOME,
+          SENHA: data.SENHA,
+          EMAIL: data.EMAIL,
+          TELEFONE: "55" + data.TELEFONE,
+          ENDERECO: data.ENDERECO,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            Toast.show({
+              type: "success",
+              text1: res.data.message,
+            });
+            return navigate("login" as never);
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          Toast.show({
+            type: "error",
+            text1: err.response.data.message,
+          });
         });
-      })
-      .catch((err) => {
-        Toast.show({
-          type: "error",
-          text1: err.response.data.message,
-        });
-      });
+      return;
+    }
+    return alert("você precisa aceitar os termos e as politicas de uso");
   };
 
   return (
@@ -151,6 +161,38 @@ export default function Register() {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="w-full">
+                {errors.SENHA && (
+                  <Text className="p-1 text-red-700">
+                    Este campo é obrigatório*
+                  </Text>
+                )}
+                <View
+                  style={{ gap: 8 }}
+                  className="w-full flex-row border border-greenLight p-3 rounded-md"
+                >
+                  <MaterialCommunityIcons
+                    name="lock-outline"
+                    size={24}
+                    color="#259d87"
+                  />
+                  <TextInput
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    placeholder="Senha"
+                    placeholderTextColor="#259d87"
+                    secureTextEntry={true}
+                  />
+                </View>
+              </View>
+            )}
+            name="SENHA"
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View className="w-full">
                 {errors.TELEFONE && (
                   <Text className="p-1 text-red-700">
                     Este campo é obrigatório*
@@ -184,7 +226,7 @@ export default function Register() {
               <View className="w-full">
                 {errors.TERMO_E_CONDICAO && (
                   <Text className="p-1 text-red-700">
-                    Este campo é obrigatório*
+                    Aceite os termos de uso*
                   </Text>
                 )}
                 <View className="w-full flex-row items-center px-4 py-2">

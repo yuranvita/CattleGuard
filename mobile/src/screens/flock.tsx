@@ -1,13 +1,13 @@
 import { Text, View, Image } from "react-native";
 import Footer from "../components/footer";
 
-function Home() {
+function Flock() {
   return (
     <View className="h-full justify-center items-center">
-      <Text>Olá mundo home</Text>
-      <Footer select={{ home: true }} />
+      <Text>Olá mundo Flock</Text>
+      <Footer select={{ flock: true }} />
     </View>
   );
 }
 
-export default Home;
+export default Flock;

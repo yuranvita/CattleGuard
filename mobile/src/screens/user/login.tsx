@@ -18,6 +18,7 @@ import { api } from "../../infra/service/api";
 
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../context/authContext";
 
 export default function Login() {
   const {
@@ -25,19 +26,10 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { signIn } = useAuth();
 
   const onSubmit = async (data: any) => {
-    await api
-      .post("/login", data)
-      .then((res) => {
-        AsyncStorage.setItem("token", res.data.token);
-      })
-      .catch((err) => {
-        Toast.show({
-          type: "error",
-          text1: err.response.data.message,
-        });
-      });
+    signIn(data);
   };
 
   return (
@@ -78,7 +70,7 @@ export default function Login() {
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
-                  placeholder="EMAIL"
+                  placeholder="Email"
                 />
               </View>
             </View>

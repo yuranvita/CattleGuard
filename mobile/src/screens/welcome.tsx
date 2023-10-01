@@ -14,13 +14,13 @@ export default function Welcome() {
           classView="border-green-700 border-2 py-3"
           classText="text-green-700 font-bold text-lg"
           name="Entrar"
-          actions={() => navigate("login")}
+          actions={() => navigate("login" as never)}
         />
         <ButtonLinear
           classView="py-3 rounded-md"
           classText="text-lg font-bold p-[2px]"
           name="Criar Conta"
-          actions={() => navigate("register")}
+          actions={() => navigate("register" as never)}
         />
       </View>
     </View>

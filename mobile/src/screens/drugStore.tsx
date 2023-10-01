@@ -1,13 +1,13 @@
 import { Text, View, Image } from "react-native";
 import Footer from "../components/footer";
 
-function Home() {
+function DrugStore() {
   return (
     <View className="h-full justify-center items-center">
-      <Text>Olá mundo home</Text>
-      <Footer select={{ home: true }} />
+      <Text>Olá mundo Drug</Text>
+      <Footer select={{ drugStore: true }} />
     </View>
   );
 }
 
-export default Home;
+export default DrugStore;
